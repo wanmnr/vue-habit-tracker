@@ -1,0 +1,92 @@
+import { Meta, Story, ArgsTable, Canvas } from '@storybook/blocks';
+import * as ModalStories from './CustomModal.stories';
+import CustomModal from './CustomModal.vue';
+
+<Meta of={ModalStories} />
+
+# Custom Modal Component
+
+A flexible modal component built with Ant Design and Tailwind CSS that supports various configurations and use cases.
+
+## Features
+
+- Multiple variants (primary, success, warning, error)
+- Different sizes (sm, md, lg, xl)
+- Fullscreen toggle
+- Custom header actions
+- Loading state
+- Configurable footer
+- Responsive design
+
+## Usage
+
+```vue
+<CustomModal
+  v-model:visible="visible"
+  title="Modal Title"
+  variant="primary"
+  size="md"
+  @ok="handleOk"
+  @cancel="handleCancel"
+>
+  <div>Modal content goes here</div>
+</CustomModal>
+```
+
+Props
+<ArgsTable of={CustomModal} />
+
+Examples
+Basic Modal
+<Canvas>
+
+<Story of={ModalStories.Basic} />
+
+</Canvas>
+
+Form Modal
+<Canvas>
+
+<Story of={ModalStories.FormModal} />
+
+</Canvas>
+
+Confirmation Modal
+<Canvas>
+
+<Story of={ModalStories.ConfirmationModal} />
+
+</Canvas>
+
+Custom Header Actions
+<Canvas>
+
+<Story of={ModalStories.CustomHeaderActions} />
+
+</Canvas>
+
+Slots
+The component provides several slots for customization:
+
+default: The main content of the modal
+header-actions: Additional actions in the header
+footer: Custom footer content
+Events
+update:visible: Emitted when the modal visibility changes
+ok: Emitted when the OK button is clicked
+cancel: Emitted when the Cancel button is clicked
+CSS Customization
+The modal uses Tailwind CSS classes and can be further customized using the contentClasses prop or by extending the component styles.
+
+4. Add these imports to your main app entry file or Storybook preview:
+
+```typescript
+// .storybook/preview.ts
+import { setup } from '@storybook/vue3';
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.css';
+import '../src/assets/styles/main.css'; // Your Tailwind CSS
+
+setup((app) => {
+  app.use(Antd);
+});

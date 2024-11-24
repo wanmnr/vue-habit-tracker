@@ -1,0 +1,63 @@
+import { Meta, Story, ArgsTable, Canvas } from '@storybook/blocks';
+import * as ButtonStories from './Button.stories';
+import Button from './Button.vue';
+
+<Meta of={ButtonStories} />
+
+# Button Component
+
+A versatile button component that supports different variants, sizes, and states.
+
+## Usage
+
+```vue
+<Button variant="primary" size="md" @click="handleClick">
+  Click me
+</Button>
+```
+
+## Props
+
+```vue
+<ArgsTable of="{Button}" />
+```
+
+## Examples
+
+### Variants
+
+```vue
+<Canvas>
+
+<Story of={ButtonStories.Primary} />
+
+<Story of={ButtonStories.Secondary} />
+
+<Story of={ButtonStories.Danger} />
+
+</Canvas>
+```
+
+### Sizes
+
+```vue
+<Canvas>
+
+<Story of={ButtonStories.Small} />
+
+<Story of={ButtonStories.Primary} />
+
+<Story of={ButtonStories.Large} />
+
+</Canvas>
+```
+
+### States
+
+```vue
+<Canvas>
+
+<Story of={ButtonStories.Disabled} />
+
+</Canvas>
+```
