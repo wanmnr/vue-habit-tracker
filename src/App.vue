@@ -1,44 +1,41 @@
 <!-- src/App.vue -->
 
 <template>
-  <nav>
-    <router-link to="/sample1">Sample 1</router-link> |
-    <router-link to="/sample2">Sample 2</router-link> |
-    <router-link to="/sample3">Sample 3</router-link>
-  </nav>
+  <div class="app-container">
+    <TheHeader />
+    
+    <main class="main-content">
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+    </main>
 
-  <router-view v-slot="{ Component }">
-    <transition name="fade" mode="out-in">
-      <component :is="Component" />
-    </transition>
-  </router-view>
+    <TheFooter />
+  </div>
 </template>
 
+<script setup lang="ts">
+import TheHeader from './components/layout/TheHeader.vue'
+import TheFooter from './components/layout/TheFooter.vue'
+</script>
+
 <style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
+@import './style/transitions.css';
+
+.app-container {
+  display: grid;
+  grid-template-areas:
+    'header'
+    'main'
+    'footer';
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
 }
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-  text-decoration: none;
-  margin: 0 10px;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+.main-content {
+  grid-area: main;
+  padding: 20px;
 }
 </style>
-
-
