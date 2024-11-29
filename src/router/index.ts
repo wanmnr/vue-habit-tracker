@@ -18,15 +18,15 @@ declare module 'vue-router' {
 
 // Lazy loaded components for code splitting and performance
 const Sample1 = defineAsyncComponent(() =>
-  import('@/views/Sample1.vue')
+  import('@/views/SampleNo1.vue')
 ) as DefineComponent<{}, {}, any>
 
 const Sample2 = defineAsyncComponent(() =>
-  import('@/views/Sample2.vue')
+  import('@/views/SampleNo2.vue')
 ) as DefineComponent<{}, {}, any>
 
 const Sample3 = defineAsyncComponent(() =>
-  import('@/views/Sample3.vue')
+  import('@/views/SampleNo3.vue')
 ) as DefineComponent<{}, {}, any>
 
 // Route metadata for better maintainability
