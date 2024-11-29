@@ -1,79 +1,68 @@
-/* :root {
+:root {
+  /* Base font settings */
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Color system */
+  --primary-color: #646cff;
+  --primary-color-dark: #535bf2;
+  --background-dark: #242424;
+  --background-light: #ffffff;
+  --text-dark: rgba(255, 255, 255, 0.87);
+  --text-light: #213547;
 
+  /* Theme colors */
+  color-scheme: light dark;
+  color: var(--text-dark);
+  background-color: var(--background-dark);
+
+  /* Text rendering */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Box sizing */
+  box-sizing: border-box;
+
+  /* Scroll behavior */
+  scroll-behavior: smooth;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
   min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* Header, main content, footer */
+  grid-template-columns: minmax(320px, 1fr);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-.card {
-  padding: 2em;
-}
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Optional: Define named grid areas for better semantics */
+body {
+  grid-template-areas:
+    'header'
+    'main'
+    'footer';
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: var(--text-light);
+    background-color: var(--background-light);
   }
-  a:hover {
-    color: #747bff;
+}
+
+@media screen and (min-width: 768px) {
+  :root {
+    font-size: calc(16px + 0.390625vw);
   }
-  button {
-    background-color: #f9f9f9;
-  }
-} */
+}
