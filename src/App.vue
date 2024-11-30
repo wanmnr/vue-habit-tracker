@@ -3,11 +3,13 @@
 <template>
   <div class="app-container">
     <TheHeader />
-    
+
     <main class="main-content">
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
-          <component :is="Component" />
+          <div :key="$route.fullPath">
+            <component :is="Component" />
+          </div>
         </transition>
       </router-view>
     </main>
