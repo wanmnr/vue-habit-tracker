@@ -16,19 +16,6 @@ declare module 'vue-router' {
   }
 }
 
-// Lazy loaded components for code splitting and performance
-const Sample1 = defineAsyncComponent(() =>
-  import('@/views/SampleNo1.vue')
-) as DefineComponent<{}, {}, any>
-
-const Sample2 = defineAsyncComponent(() =>
-  import('@/views/SampleNo2.vue')
-) as DefineComponent<{}, {}, any>
-
-const Sample3 = defineAsyncComponent(() =>
-  import('@/views/SampleNo3.vue')
-) as DefineComponent<{}, {}, any>
-
 // Route metadata for better maintainability
 const routeMetadata = {
   sample1: {
@@ -54,27 +41,25 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/sample1',
     name: 'sample1',
-    component: Sample1,
+    component: () => import('@/views/SampleNo1.vue'),
     meta: routeMetadata.sample1
   },
   {
     path: '/sample2',
     name: 'sample2',
-    component: Sample2,
+    component: () => import('@/views/SampleNo2.vue'),
     meta: routeMetadata.sample2
   },
   {
     path: '/sample3',
     name: 'sample3',
-    component: Sample3,
+    component: () => import('@/views/SampleNo3.vue'),
     meta: routeMetadata.sample3
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
-    component: defineAsyncComponent(() =>
-      import('@/views/NotFound.vue')
-    ) as DefineComponent<{}, {}, any>
+    component: () => import('@/views/NotFound.vue')
   }
 ]
 
@@ -97,10 +82,20 @@ const router = createRouter({
   scrollBehavior
 })
 
-// Navigation guards
-router.beforeEach((to, _from, next) => {
-  document.title = `${to.meta.title} | My App`
-  next()
+router.beforeEach(async (to, _from, next) => {
+  try {
+    const title = to.meta.title || 'My App'
+    document.title = `${title} | My App`
+    next()
+  } catch (error) {
+    console.error('Navigation error:', error)
+    next(false)
+  }
+})
+
+// Add error handling for route changes
+router.onError((error) => {
+  console.error('Router error:', error)
 })
 
 export default router
