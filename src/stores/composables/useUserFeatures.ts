@@ -1,8 +1,8 @@
+// stores/composables/useUserFeatures.ts
 import { useAuthStore } from '../modules/auth';
 import { useUserPreferencesStore } from '../modules/userPreferences';
 import { useUserPermissionsStore } from '../modules/userPermissions';
 import { PERMISSIONS, RESOURCES } from '@/constants/permissions';
-
 
 export function useUserFeatures() {
   const authStore = useAuthStore();
