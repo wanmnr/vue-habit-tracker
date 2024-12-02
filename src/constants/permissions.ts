@@ -1,3 +1,4 @@
+// constants/Permissions.ts
 export const PERMISSIONS = {
     READ: 'read',
     WRITE: 'write',
