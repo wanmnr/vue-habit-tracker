@@ -1,11 +1,13 @@
+// stores/modules/userPreferences.ts
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import type { UserPreferences } from '@/types/user';
+import type { UserPreferences } from '@/types/preferences';
+import { MOCK_USER_PREFERENCES, mockApiDelay } from '@/mocks';
 import { useAuthStore } from './auth';
 
 export const useUserPreferencesStore = defineStore('userPreferences', () => {
   const authStore = useAuthStore();
-  
+
   const preferences = ref<UserPreferences>({
     theme: 'light',
     language: 'en',
@@ -14,6 +16,10 @@ export const useUserPreferencesStore = defineStore('userPreferences', () => {
       push: true,
       desktop: false,
     },
+    dashboard: {
+      layout: 'basic',
+      widgets: []
+    }
   });
 
   const isLoading = ref(false);
@@ -28,17 +34,25 @@ export const useUserPreferencesStore = defineStore('userPreferences', () => {
 
   // Actions
   async function fetchPreferences() {
-    if (!authStore.isAuthenticated) return;
-    
+    if (!authStore.isAuthenticated || !authStore.user?.email) return;
+
     try {
       isLoading.value = true;
-      const response = await fetch(`/api/users/${authStore.user?.id}/preferences`, {
-        headers: {
-          Authorization: `Bearer ${authStore.token}`,
-        },
-      });
-      const data = await response.json();
-      preferences.value = data;
+
+      await mockApiDelay();
+      
+      const userPreferences = MOCK_USER_PREFERENCES[authStore.user.email];
+      if (userPreferences) {
+        preferences.value = userPreferences;
+      }
+
+      // const response = await fetch(`/api/users/${authStore.user?.id}/preferences`, {
+      //   headers: {
+      //     Authorization: `Bearer ${authStore.token}`,
+      //   },
+      // });
+      // const data = await response.json();
+      // preferences.value = data;
     } finally {
       isLoading.value = false;
     }
@@ -47,16 +61,24 @@ export const useUserPreferencesStore = defineStore('userPreferences', () => {
   async function updatePreferences(newPreferences: Partial<UserPreferences>) {
     try {
       isLoading.value = true;
-      const response = await fetch(`/api/users/${authStore.user?.id}/preferences`, {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${authStore.token}`,
-        },
-        body: JSON.stringify(newPreferences),
-      });
+
+      await mockApiDelay();
       
-      const data = await response.json();
-      preferences.value = { ...preferences.value, ...data };
+      preferences.value = {
+        ...preferences.value,
+        ...newPreferences
+      };
+
+      // const response = await fetch(`/api/users/${authStore.user?.id}/preferences`, {
+      //   method: 'PATCH',
+      //   headers: {
+      //     Authorization: `Bearer ${authStore.token}`,
+      //   },
+      //   body: JSON.stringify(newPreferences),
+      // });
+
+      // const data = await response.json();
+      // preferences.value = { ...preferences.value, ...data };
     } finally {
       isLoading.value = false;
     }
