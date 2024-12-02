@@ -1,3 +1,4 @@
+// types/forms.ts
 export interface FormState {
   email: string;
   password: string;
