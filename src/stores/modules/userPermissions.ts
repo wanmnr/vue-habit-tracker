@@ -1,12 +1,14 @@
+// stores/modules/userPermissions.ts
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import type { UserPermission } from '@/types/user';
+import type { Permission } from '@/types/permissions';
+import { MOCK_USER_PERMISSIONS, mockApiDelay } from '@/mocks';
 import { useAuthStore } from './auth';
 
 export const useUserPermissionsStore = defineStore('userPermissions', () => {
   const authStore = useAuthStore();
-  
-  const permissions = ref<UserPermission[]>([]);
+
+  const permissions = ref<Permission[]>([]);
   const isLoading = ref(false);
 
   // Getters
@@ -29,17 +31,26 @@ export const useUserPermissionsStore = defineStore('userPermissions', () => {
 
   // Actions
   async function fetchPermissions() {
-    if (!authStore.isAuthenticated) return;
-    
+
+    if (!authStore.isAuthenticated || !authStore.user?.email) return;
+
     try {
       isLoading.value = true;
-      const response = await fetch(`/api/users/${authStore.user?.id}/permissions`, {
-        headers: {
-          Authorization: `Bearer ${authStore.token}`,
-        },
-      });
-      const data = await response.json();
-      permissions.value = data;
+
+      await mockApiDelay();
+
+      const userPermissions = MOCK_USER_PERMISSIONS[authStore.user.email];
+      if (userPermissions) {
+        permissions.value = userPermissions;
+      }
+
+      // const response = await fetch(`/api/users/${authStore.user?.id}/permissions`, {
+      //   headers: {
+      //     Authorization: `Bearer ${authStore.token}`,
+      //   },
+      // });
+      // const data = await response.json();
+      // permissions.value = data;
     } finally {
       isLoading.value = false;
     }
