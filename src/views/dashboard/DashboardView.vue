@@ -9,7 +9,7 @@
             <a-layout-content class="dashboard-content">
                 <a-row :gutter="[16, 16]">
                     <a-col :span="24">
-                        <UserSummaryCard :summary="userSummary" />
+                        <UserSummaryCard :summary="dashboardSummary" />
                     </a-col>
 
                     <a-col :xs="24" :lg="12">
@@ -19,6 +19,10 @@
                     <a-col :xs="24" :lg="12">
                         <PermissionsPanel />
                     </a-col>
+
+                    <a-col :span="24">
+                        <DashboardWidgetsGrid />
+                    </a-col>
                 </a-row>
             </a-layout-content>
         </a-layout>
@@ -27,19 +31,23 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { useUserFeatures } from '@/stores';
+import { useUserDashboardStore } from '@/stores/modules/userDashboard';
+import { useUserFeatures } from '@/stores/composables/useUserFeatures';
 import DashboardHeader from './components/DashboardHeader.vue';
 import DashboardSidebar from './components/DashboardSidebar.vue';
 import UserSummaryCard from './components/UserSummaryCard.vue';
 import PreferencesPanel from './components/PreferencesPanel.vue';
 import PermissionsPanel from './components/PermissionsPanel.vue';
 
-const { getUserSummary } = useUserFeatures();
-const userSummary = ref(getUserSummary());
+const userDashboardStore = useUserDashboardStore();
+const { initializeUserFeatures } = useUserFeatures();
 
-onMounted(() => {
-    // Refresh summary periodically or on relevant events
-    userSummary.value = getUserSummary();
+const dashboardSummary = ref(userDashboardStore.getDashboardSummary());
+
+onMounted(async () => {
+    await initializeUserFeatures();
+    await userDashboardStore.fetchDashboardData();
+    dashboardSummary.value = userDashboardStore.getDashboardSummary();
 });
 </script>
 
