@@ -1,3 +1,4 @@
+<!-- components/PermissionsPanel.vue -->
 <template>
     <a-card title="User Permissions" :loading="loading">
         <template v-if="permissionsStore.isAdmin">
