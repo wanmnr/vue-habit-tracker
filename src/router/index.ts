@@ -6,7 +6,7 @@ import {
   RouteRecordRaw,
   RouterScrollBehavior
 } from 'vue-router'
-import { defineAsyncComponent, DefineComponent } from 'vue'
+import { useAuthStore } from '@/stores/modules/auth'
 
 // Declare module augmentation for vue-router
 declare module 'vue-router' {
@@ -18,6 +18,14 @@ declare module 'vue-router' {
 
 // Route metadata for better maintainability
 const routeMetadata = {
+  login: {
+    title: 'Login',
+    requiresAuth: false
+  },
+  dashboard: {
+    title: 'Dashboard',
+    requiresAuth: true
+  },
   sample1: {
     title: 'Sample 1',
     requiresAuth: false
@@ -36,7 +44,19 @@ const routeMetadata = {
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: { name: 'sample1' }
+    redirect: { name: 'login' }  // Changed default redirect to login
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/auth/LoginView.vue'),
+    meta: routeMetadata.login
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => import('@/views/dashboard/DashboardView.vue'),
+    meta: routeMetadata.dashboard
   },
   {
     path: '/sample1',
@@ -86,10 +106,33 @@ router.beforeEach(async (to, _from, next) => {
   try {
     const title = to.meta.title || 'My App'
     document.title = `${title} | My App`
-    next()
+
+    // Get auth store instance
+    const authStore = useAuthStore()
+
+    // Check if user is authenticated
+    const isAuthenticated = authStore.isAuthenticated
+
+    if (to.meta.requiresAuth && !isAuthenticated) {
+      // Store the intended destination
+      const redirect = to.fullPath
+      // Redirect to login if authentication is required but user is not authenticated
+      next({
+        name: 'login',
+        query: { redirect }
+      })
+    } else if (to.name === 'login' && isAuthenticated) {
+      // Redirect to dashboard if user is already authenticated
+      next({ name: 'dashboard' })
+    } else {
+      next()
+    }
   } catch (error) {
     console.error('Navigation error:', error)
-    next(false)
+    // Handle any potential errors during navigation
+    const authStore = useAuthStore()
+    authStore.clearAuth() // Clear auth state on error
+    next({ name: 'login' })
   }
 })
 
