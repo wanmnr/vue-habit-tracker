@@ -1,3 +1,4 @@
+<!-- dashboard/DashboardWidgetGrid.vue -->
 <template>
     <a-card title="Dashboard Widgets">
         <template v-if="isLoading">
