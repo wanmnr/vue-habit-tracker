@@ -1,3 +1,4 @@
+<!-- components/UserSummaryCard.vue -->
 <template>
   <a-card :bordered="false" class="user-summary-card">
     <a-row :gutter="[16, 16]" align="middle">
