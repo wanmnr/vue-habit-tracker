@@ -1,3 +1,4 @@
+<!-- components/PreferencesPanel.vue -->
 <template>
     <a-card title="User Preferences" :loading="loading">
         <a-form :model="preferences" layout="vertical" @finish="handleUpdate">
