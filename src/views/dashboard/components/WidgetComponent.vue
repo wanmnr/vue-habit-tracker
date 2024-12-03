@@ -1,3 +1,4 @@
+<!-- components/WidgetComponent.vue -->
 <template>
     <a-card :title="widgetTitle">
         <template v-if="widgetType === 'analytics'">
