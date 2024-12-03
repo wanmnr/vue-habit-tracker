@@ -54,7 +54,7 @@ import { ref, computed } from 'vue';
 import { BulbOutlined, BulbFilled } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
 import { useUserFeatures } from '@/stores';
-import type { UserPreferences } from '@/types/user';
+import type { UserPreferences } from '@/types/preferences';
 
 const { preferencesStore } = useUserFeatures();
 
